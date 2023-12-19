@@ -107,9 +107,13 @@ def signup():
 @app.route('/login' , methods = ['POST'])
 def login():
     email = request.form['email']
+    #email = r"'karthik@gmail.com' and password = '1350cef8feedbbaece4cfbabcc737f65f588aa526a4ec5f5ae65117484168161';"
+    #print("SELECT email, cName, customer_id FROM customer WHERE email = {}".format(email))
     password = request.form['password']   
     enc_password = getEncryptedPassword(password)
 
+    #query = "SELECT email, cName, customer_id FROM customer WHERE email = %s"
+    #parameters = (email,)
     query = "SELECT email, cName, customer_id FROM customer WHERE email = %s and password = %s;"
     parameters = (email, enc_password)
 
@@ -396,9 +400,11 @@ def fetchdevicepiedata():
 def fetchdevicebardata():
 
     sl_id = request.form['sl_id']
+    month = request.form['month']
+    year = request.form['year']
 
-    query = "select dm.device_type , sum(e.val) from events e , installed_devices id, device_models dm where e.installed_device_id = id.installed_device_id and id.device_id = dm.device_id and id.sl_id = %s and DATE_PART('month', e.event_timestamp) = 12 and DATE_PART('year', e.event_timestamp) = 2023 and e.event_desc = 'energy use' group by dm.device_type;"
-    parameters = (sl_id,)
+    query = "select dm.device_type , sum(e.val) from events e , installed_devices id, device_models dm where e.installed_device_id = id.installed_device_id and id.device_id = dm.device_id and id.sl_id = %s and DATE_PART('month', e.event_timestamp) = %s and DATE_PART('year', e.event_timestamp) = %s and e.event_desc = 'energy use' group by dm.device_type;"
+    parameters = (sl_id,month,year)
 
     result = fetchQueryResult(query, parameters)
 
@@ -423,9 +429,11 @@ def fetchdevicebardata():
 def fetchservicelocationbardata():
 
     c_id = request.form['c_id']
+    month = request.form['month']
+    year = request.form['year']
 
-    query = "select sl2.p_st_address || '-' || sl2.p_city as House , sum(val) from events e , installed_devices id, service_locations sl2 where e.installed_device_id = id.installed_device_id and id.sl_id = sl2.sl_id and id.sl_id in (select sl_id from service_locations sl where sl.customer_id = %s) and e.event_desc = 'energy use' group by sl2.p_st_address , sl2.p_city;"
-    parameters = (c_id,)
+    query = "select sl2.p_st_address || '-' || sl2.p_city as House , sum(val) from events e , installed_devices id, service_locations sl2 where e.installed_device_id = id.installed_device_id and id.sl_id = sl2.sl_id and id.sl_id in (select sl_id from service_locations sl where sl.customer_id = %s) and DATE_PART('month', e.event_timestamp) = %s and DATE_PART('year', e.event_timestamp) = %s and e.event_desc = 'energy use' group by sl2.p_st_address , sl2.p_city;"
+    parameters = (c_id,month,year)
 
     result = fetchQueryResult(query, parameters)
 
@@ -446,6 +454,32 @@ def fetchservicelocationbardata():
 
     return data
 
+@app.route('/fetchservicelocationpiedata', methods = ['POST'])
+def fetchservicelocationpiedata():
+
+    c_id = request.form['c_id']
+
+    query = "select p_city , count(*) from service_locations sl where sl.customer_id = %s group by p_city;"
+    parameters = (c_id,)
+
+    result = fetchQueryResult(query, parameters)
+
+    device_model = []
+    count = []
+
+    for device in result:
+        device_model.append(device[0])
+        count.append(device[1])
+    
+    data = {
+        'flag' : 1,
+        'device_model' : device_model,
+        'count' : count
+    }
+
+    print(data)
+
+    return data
 
 if __name__ == '__main__':
-    app.run(debug = True)
+    app.run(debug = True, host='0.0.0.0', port=8989)

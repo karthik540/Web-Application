@@ -56,11 +56,18 @@
                     email: '',
                     password: ''
                 },
+                isEmailValid: true,
             },
             mounted() {
             },
             methods: 
             {
+                checkEmailValidity(event) {
+                    console.log("comes here");
+                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    this.isEmailValid = emailRegex.test(this.signupFormData.email);
+                    console.log(this.isEmailValid);
+                },
                 submitForm() {
                     console.log('Form Data:', this.signupFormData);
 
@@ -90,7 +97,7 @@
                     formData.append('email', this.loginFormData.email);
                     formData.append('password', this.loginFormData.password);
 
-                    axios.post('http://127.0.0.1:5000/login', formData)
+                    axios.post('http://10.18.168.84:8989/login', formData)
                     .then(response => {
                         console.log('Server Response:', response.data);
                         window.location = "/";
