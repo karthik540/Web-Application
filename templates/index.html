@@ -56,9 +56,11 @@
                     email: '',
                     password: ''
                 },
+                baseUrl: null,
                 isEmailValid: true,
             },
             mounted() {
+                this.baseUrl = window.location.origin;
             },
             methods: 
             {
@@ -80,7 +82,7 @@
                     formData.append('state', this.signupFormData.state);
                     formData.append('zipcode', this.signupFormData.zipcode);
 
-                    axios.post('http://127.0.0.1:5000/signup', formData)
+                    axios.post('http://127.0.0.1:8989/signup', formData)
                     .then(response => {
                         console.log('Server Response:', response.data);
                         window.location = "/";
@@ -97,10 +99,10 @@
                     formData.append('email', this.loginFormData.email);
                     formData.append('password', this.loginFormData.password);
 
-                    axios.post('http://10.18.168.84:8989/login', formData)
+                    axios.post(this.baseUrl + '/login', formData)
                     .then(response => {
                         console.log('Server Response:', response.data);
-                        window.location = "/";
+                        window.location = window.location.origin;
                     })
                     .catch(error => {
                         console.error('Error:', error);
@@ -108,7 +110,7 @@
                 },
 
                 logout() {
-                    axios.post('http://127.0.0.1:5000/logout')
+                    axios.post('http://127.0.0.1:8989/logout')
                     .then(response => {
                         console.log('Server Response:', response.data);
                         window.location = "/";

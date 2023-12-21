@@ -1,9 +1,11 @@
 
 from flask import Flask , render_template, session, request, redirect, url_for, jsonify
 import psycopg2, hashlib, os
+from flask_cors import CORS
 
 app = Flask(__name__) 
 app.secret_key = os.urandom(24)
+CORS(app)
 
 def fetchQueryResult(query, parameters):
     con = psycopg2.connect(
@@ -190,8 +192,6 @@ def servicelocationdata():
 
 @app.route('/servicelocationinsert', methods = ['POST'])
 def servicelocationdatainsert():
-
-
 
     query = "INSERT INTO service_locations (customer_id, p_st_address, p_city, p_state, p_zipcode, take_over_date, square_footage, bedroom_count, occupants_count) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s);"
     print(request.form['takeoverDate'])

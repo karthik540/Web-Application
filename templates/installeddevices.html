@@ -227,13 +227,13 @@
                 console.log("aslfbaslkbaslg las lsa asdfasflfsa lasf");
                 console.log(sl_id);
 
-                const gResponse = await fetch("http://127.0.0.1:5000/devicesdata/"+sl_id);
+                const gResponse = await fetch("http://127.0.0.1:8989/devicesdata/"+sl_id);
                 const gObject = await gResponse.json();
                 console.log(gObject);
                 this.installedDevicesData = gObject.installedDevices;
                 console.log(this.installedDevicesData);
                 
-                const tResponse = await fetch("http://127.0.0.1:5000/fetchdevicetypes");
+                const tResponse = await fetch("http://127.0.0.1:8989/fetchdevicetypes");
                 const tObject = await tResponse.json();
                 console.log(tObject);
                 this.devicesTypesData = tObject.devicestypes;
@@ -245,7 +245,7 @@
                 formData.append('year', 2023);
 
 
-                await axios.post('http://127.0.0.1:5000/fetchdevicepiedata', formData)
+                await axios.post('http://127.0.0.1:8989/fetchdevicepiedata', formData)
                     .then(response => {
                         console.log('Pie response:', response.data);
                         this.chartData.datasets[0].data = response.data.count;
@@ -271,7 +271,7 @@
                 });
                 this.installedDevicePieChart.update();
 
-                await axios.post('http://127.0.0.1:5000/fetchdevicebardata', formData)
+                await axios.post('http://127.0.0.1:8989/fetchdevicebardata', formData)
                     .then(response => {
                         console.log('Bar response:', response.data);
                         this.barChartData.datasets[0].data = response.data.count;
@@ -309,7 +309,7 @@
                     formData.append('year', this.barChartQueryData.year);
 
 
-                    await axios.post('http://127.0.0.1:5000/fetchdevicebardata', formData)
+                    await axios.post('http://127.0.0.1:8989/fetchdevicebardata', formData)
                         .then(response => {
                             console.log('Bar response:', response.data);
                             this.barChartData.datasets[0].data = response.data.count;
@@ -357,7 +357,7 @@
                     formData.append('state', this.signupFormData.state);
                     formData.append('zipcode', this.signupFormData.zipcode);
 
-                    axios.post('http://127.0.0.1:5000/signup', formData)
+                    axios.post('http://127.0.0.1:8989/signup', formData)
                     .then(response => {
                         console.log('Server Response:', response.data);
                         window.location = "/";
@@ -383,7 +383,7 @@
                     formData.append('email', this.loginFormData.email);
                     formData.append('password', this.loginFormData.password);
 
-                    axios.post('http://127.0.0.1:5000/login', formData)
+                    axios.post('http://127.0.0.1:8989/login', formData)
                     .then(response => {
                         console.log('Server Response:', response.data);
                         window.location = "/";
@@ -394,7 +394,7 @@
                 },
 
                 logout() {
-                    axios.post('http://127.0.0.1:5000/logout')
+                    axios.post('http://127.0.0.1:8989/logout')
                     .then(response => {
                         console.log('Server Response:', response.data);
                         window.location = "/";
@@ -417,7 +417,7 @@
                     formData.append('bedroomCount', this.serviceLocationFormData.bedroomCount);
                     formData.append('occupantCount', this.serviceLocationFormData.occupantCount);
 
-                    axios.post('http://127.0.0.1:5000/servicelocationinsert', formData)
+                    axios.post('http://127.0.0.1:8989/servicelocationinsert', formData)
                     .then(response => {
                         console.log('Server Response:', response.data);
                         window.location = "/servicelocations";
@@ -435,7 +435,7 @@
                     formData.append('device_id', this.modelNumber);
                     formData.append('sl_id', sl_id);
                     
-                    axios.post('http://127.0.0.1:5000/installeddeviceinsert', formData)
+                    axios.post('http://127.0.0.1:8989/installeddeviceinsert', formData)
                     .then(response => {
                         console.log('Server Response:', response.data);
                         window.location = window.location;
@@ -451,7 +451,7 @@
                     const formData = new FormData();
                     formData.append('sl_id', sl_id);
 
-                    axios.post('http://127.0.0.1:5000/servicelocationdelete', formData)
+                    axios.post('http://127.0.0.1:8989/servicelocationdelete', formData)
                     .then(response => {
                         console.log('Server Response:', response.data);
                         window.location = "/servicelocations";
@@ -471,7 +471,7 @@
                     const formData = new FormData();
                     formData.append('installed_device_id', installed_device_id);
 
-                    axios.post('http://127.0.0.1:5000/installeddevicedelete', formData)
+                    axios.post('http://127.0.0.1:8989/installeddevicedelete', formData)
                     .then(response => {
                         console.log('Server Response:', response.data);
                         window.location = window.location;
@@ -485,7 +485,7 @@
                 {
                     device_type = event.target.value;
 
-                    axios.get('http://127.0.0.1:5000/fetchmodels/'+ device_type)
+                    axios.get('http://127.0.0.1:8989/fetchmodels/'+ device_type)
                     .then(response => {
                         console.log('Server Response:', response.data.modeltypes);
                         this.modelTypesData = response.data.modeltypes;

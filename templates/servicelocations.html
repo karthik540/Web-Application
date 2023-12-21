@@ -255,7 +255,7 @@
             mounted() {
             },
             created: async function(){
-                const gResponse = await fetch("http://127.0.0.1:5000/servicelocationdata");
+                const gResponse = await fetch("http://127.0.0.1:8989/servicelocationdata");
                 const gObject = await gResponse.json();
                 this.serviceLocationData = gObject.servicelocations;
                 console.log(this.serviceLocationData);
@@ -266,7 +266,7 @@
                 formData.append('month', 12);
                 formData.append('year', 2023);
 
-                await axios.post('http://127.0.0.1:5000/fetchservicelocationpiedata', formData)
+                await axios.post('http://127.0.0.1:8989/fetchservicelocationpiedata', formData)
                     .then(response => {
                         console.log('Pie response:', response.data);
                         this.chartData.datasets[0].data = response.data.count;
@@ -292,7 +292,7 @@
                 });
 
 
-                await axios.post('http://127.0.0.1:5000/fetchservicelocationbardata', formData)
+                await axios.post('http://127.0.0.1:8989/fetchservicelocationbardata', formData)
                     .then(response => {
                         console.log('Bar response:', response.data);
                         this.barChartData.datasets[0].data = response.data.count;
@@ -330,7 +330,7 @@
                     formData.append('year', this.barChartQueryData.year);
 
 
-                    await axios.post('http://127.0.0.1:5000/fetchservicelocationbardata', formData)
+                    await axios.post('http://127.0.0.1:8989/fetchservicelocationbardata', formData)
                         .then(response => {
                             console.log('Bar response:', response.data);
                             this.barChartData.datasets[0].data = response.data.count;
@@ -379,7 +379,7 @@
                     formData.append('state', this.signupFormData.state);
                     formData.append('zipcode', this.signupFormData.zipcode);
 
-                    axios.post('http://127.0.0.1:5000/signup', formData)
+                    axios.post('http://127.0.0.1:8989/signup', formData)
                     .then(response => {
                         console.log('Server Response:', response.data);
                         window.location = "/";
@@ -405,7 +405,7 @@
                     formData.append('email', this.loginFormData.email);
                     formData.append('password', this.loginFormData.password);
 
-                    axios.post('http://127.0.0.1:5000/login', formData)
+                    axios.post('http://127.0.0.1:8989/login', formData)
                     .then(response => {
                         console.log('Server Response:', response.data);
                         window.location = "/";
@@ -416,7 +416,7 @@
                 },
 
                 logout() {
-                    axios.post('http://127.0.0.1:5000/logout')
+                    axios.post('http://127.0.0.1:8989/logout')
                     .then(response => {
                         console.log('Server Response:', response.data);
                         window.location = "/";
@@ -439,7 +439,7 @@
                     formData.append('bedroomCount', this.serviceLocationFormData.bedroomCount);
                     formData.append('occupantCount', this.serviceLocationFormData.occupantCount);
 
-                    axios.post('http://127.0.0.1:5000/servicelocationinsert', formData)
+                    axios.post('http://127.0.0.1:8989/servicelocationinsert', formData)
                     .then(response => {
                         console.log('Server Response:', response.data);
                         window.location = "/servicelocations";
@@ -454,7 +454,7 @@
                     const formData = new FormData();
                     formData.append('sl_id', sl_id);
 
-                    axios.post('http://127.0.0.1:5000/servicelocationdelete', formData)
+                    axios.post('http://127.0.0.1:8989/servicelocationdelete', formData)
                     .then(response => {
                         console.log('Server Response:', response.data);
                         window.location = "/servicelocations";
